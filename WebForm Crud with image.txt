@@ -1,0 +1,368 @@
+asp.net CRUD with Image:-
+-------------------------------------------------------------------
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="MandyWebForms.Home" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td>
+                        <asp:TextBox ID="txtName" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>
+                        <asp:RadioButton ID="rdbMale" GroupName="abc" runat="server" Text="Male" />
+                        <asp:RadioButton ID="rdbFemale" GroupName="abc" runat="server" Text="Female" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Age</td>
+                    <td>
+                        <asp:TextBox ID="txtAge" TextMode="Number" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>
+                        <asp:TextBox ID="txtAddress" runat="server" TextMode="MultiLine" Height="73px"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td>
+                        <asp:DropDownList ID="ddlCity" runat="server">
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Salary</td>
+                    <td>
+                        <asp:TextBox ID="txtSalary" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                  <tr>
+                    <td>Pic Upload</td>
+                    <td>
+                        <asp:FileUpload ID="picUpload" runat="server" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:Button ID="btnReg" runat="server" Text="Register" OnClick="btnReg_Click" Style="height: 26px" />
+                    </td>
+                    <td>
+                        <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" Style="height: 26px" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br />
+        <h1>Show Employee Records</h1>
+        <div>
+            <asp:GridView ID="gdShowEmp" runat="server" AutoGenerateColumns="false" CellPadding="4" ForeColor="#333333" GridLines="None">
+                <Columns>
+                    <asp:TemplateField HeaderText="EID">
+                        <ItemTemplate>
+                            <asp:Label ID="lblEid" runat="server" Text='<%#Bind("eid")%>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="NAME">
+                        <ItemTemplate>
+                            <asp:Label ID="lblName" runat="server" Text='<%#Bind("ename")%>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="GENDER">
+                        <ItemTemplate>
+                            <asp:Label ID="lblGen" runat="server" Text='<%#Bind("gender")%>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="AGE">
+                        <ItemTemplate>
+                            <asp:Label ID="lblAge" runat="server" Text='<%#Bind("age")%>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="ADDRESS">
+                        <ItemTemplate>
+                            <asp:Label ID="lblAddress" runat="server" Text='<%#Bind("eaddress")%>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="CITY">
+                        <ItemTemplate>
+                            <asp:Label ID="lblCity" runat="server" Text='<%#Bind("city")%>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="SALARY">
+                        <ItemTemplate>
+                            <asp:Label ID="lblSalary" runat="server" Text='<%#Bind("salary")%>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="PIC">
+                        <ItemTemplate>
+                            <asp:Image ID="empImg" runat="server" ImageUrl='<%#Bind("empimg") %>' Height="200px" Width="200px" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="EDIT">
+                        <ItemTemplate>
+                            <asp:LinkButton ID="lnkEdit" runat="server" Text="EDIT" CommandArgument='<%#Bind("eid") %>' OnCommand="lnkEdit_Command"></asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="DELETE">
+                        <ItemTemplate>
+                            <asp:LinkButton ID="lnkDelete" runat="server" Text="DELETE" CommandArgument='<%#Bind("eid") %>' OnCommand="lnkDelete_Command" OnClientClick="return confirm('Are you Sure you want to Delete(Y/N)?');"></asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                <AlternatingRowStyle BackColor="White" />
+                <FooterStyle BackColor="#990000" Font-Bold="True" ForeColor="White" />
+                <HeaderStyle BackColor="#990000" Font-Bold="True" ForeColor="White" />
+                <PagerStyle BackColor="#FFCC66" ForeColor="#333333" HorizontalAlign="Center" />
+                <RowStyle BackColor="#FFFBD6" ForeColor="#333333" />
+                <SelectedRowStyle BackColor="#FFCC66" Font-Bold="True" ForeColor="Navy" />
+                <SortedAscendingCellStyle BackColor="#FDF5AC" />
+                <SortedAscendingHeaderStyle BackColor="#4D0000" />
+                <SortedDescendingCellStyle BackColor="#FCF6C0" />
+                <SortedDescendingHeaderStyle BackColor="#820000" />
+            </asp:GridView>
+
+        </div>
+    </form>
+</body>
+</html>
+----------------------------------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Data;
+using System.IO;
+
+namespace MandyWebForms
+{
+    public partial class Home : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DBCS"].ToString());
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                bindEmployee();
+                BindCity();
+            }
+        }
+        private void bindEmployee()
+        {
+            string sql = "SELECT * FROM tbl_Employee ORDER BY eid DESC";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            if (dt.Rows.Count > 0)
+            {
+                gdShowEmp.DataSource = dt;
+                gdShowEmp.DataBind();
+            }
+        }
+        private void BindCity()
+        {
+            string sql = "select * from tbl_City";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            if (dt.Rows.Count > 0)
+            {
+                ddlCity.DataValueField = "cid";
+                ddlCity.DataTextField = "cname";
+                ddlCity.DataSource = dt;
+                ddlCity.DataBind();
+                ddlCity.Items.Insert(0, new ListItem("--Select City--", "0"));
+            }
+        }
+        private string uploadPic()
+        {
+            string filepath = "~/images/default.png";
+            string filename = Path.GetFileName(picUpload.PostedFile.FileName);
+            if (filename == "" || filename == null)
+            {
+                return filepath;
+            }
+            else
+            {
+                picUpload.SaveAs(Server.MapPath("images/" + filename));
+                filepath = "~/images/" + filename;
+            }
+            return filepath;
+        }
+        protected void btnReg_Click(object sender, EventArgs e)
+        {
+            if (btnReg.Text == "Update")
+            {
+                updateEmployee();
+            }
+            else
+            {
+                addEmployee();
+            }
+        }
+        private void clearEmployee()
+        {
+            txtName.Text = "";
+            txtAge.Text = "";
+            txtAddress.Text = "";
+            ddlCity.SelectedIndex = 0;
+            txtSalary.Text = "";
+        }
+        private void addEmployee()
+        {
+            string empPic = uploadPic();
+            string gen = "";
+            if (con.State == ConnectionState.Closed)
+            {
+                con.Open();
+            }
+            if (rdbMale.Checked)
+            {
+                gen = "Male";
+            }
+            else
+            {
+                gen = "Female";
+            }
+            string sql = "insert into tbl_Employee(ename,gender,age,eaddress,city,salary,empimg)values(@name,@gender,@age,@address,@city,@salary,@img)";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());
+            cmd.Parameters.AddWithValue("@gender", gen);
+            cmd.Parameters.AddWithValue("@age", txtAge.Text.Trim());
+            cmd.Parameters.AddWithValue("@address", txtAddress.Text.Trim());
+            cmd.Parameters.AddWithValue("@city", ddlCity.SelectedItem.ToString());
+            cmd.Parameters.AddWithValue("@salary", txtSalary.Text.Trim());
+            cmd.Parameters.AddWithValue("@img",empPic);
+            int n = cmd.ExecuteNonQuery();
+            if (n != 0)
+            {
+                Response.Write("<script>alert('Employee Added SuccessFully!!');</script>");
+                bindEmployee();
+            }
+            else
+            {
+                Response.Write("<script>alert('Employee Failed!!');</script>");
+            }
+            con.Close();
+        }
+        private void updateEmployee()
+        {
+            string empPic = uploadPic();
+            int eid = Convert.ToInt32(ViewState["eid"]);
+            string gen = "";
+            if (con.State == ConnectionState.Closed)
+            {
+                con.Open();
+            }
+            if (rdbMale.Checked)
+            {
+                gen = "Male";
+            }
+            else
+            {
+                gen = "Female";
+            }
+            string sql = "update tbl_Employee set ename=@name,gender=@gender,age=@age,eaddress=@address,city=@city,salary=@salary,empimg=@img where eid=@eid";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());
+            cmd.Parameters.AddWithValue("@gender", gen);
+            cmd.Parameters.AddWithValue("@age", txtAge.Text.Trim());
+            cmd.Parameters.AddWithValue("@address", txtAddress.Text.Trim());
+            cmd.Parameters.AddWithValue("@city", ddlCity.SelectedItem.ToString());
+            cmd.Parameters.AddWithValue("@salary", txtSalary.Text.Trim());
+            cmd.Parameters.AddWithValue("@img",empPic);
+            cmd.Parameters.AddWithValue("@eid", eid);
+            int n = cmd.ExecuteNonQuery();
+            if (n != 0)
+            {
+                Response.Write("<script>alert('Employee Updated SuccessFully!!');</script>");
+                btnReg.Text = "Register";
+                bindEmployee();
+            }
+            else
+            {
+                Response.Write("<script>alert('Employee Failed!!');</script>");
+            }
+            con.Close();
+        }
+
+        protected void btnClear_Click(object sender, EventArgs e)
+        {
+            clearEmployee();
+        }
+
+        protected void lnkEdit_Command(object sender, CommandEventArgs e)
+        {
+            string gen = "";
+            int eid = Convert.ToInt32(e.CommandArgument);
+            ViewState["eid"] = eid;
+            string sql = "select * from tbl_Employee where eid='" + eid + "'";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            if (dt.Rows.Count > 0)
+            {
+                txtName.Text = dt.Rows[0]["ename"].ToString();
+                gen = dt.Rows[0]["gender"].ToString();
+                if (gen == "Male")
+                {
+                    rdbMale.Checked = true;
+                    rdbFemale.Checked = false;
+                }
+                else
+                {
+                    rdbMale.Checked = false;
+                    rdbFemale.Checked = true;
+                }
+                txtAge.Text = dt.Rows[0]["age"].ToString();
+                txtAddress.Text = dt.Rows[0]["eaddress"].ToString();
+                ddlCity.SelectedItem.Text = dt.Rows[0]["city"].ToString();
+                txtSalary.Text = dt.Rows[0]["salary"].ToString();
+                btnReg.Text = "Update";
+            }
+        }
+
+        protected void lnkDelete_Command(object sender, CommandEventArgs e)
+        {
+            int eid = Convert.ToInt32(e.CommandArgument);
+            string sql = "delete from tbl_Employee where eid=@eid";
+            if (con.State == ConnectionState.Closed)
+            {
+                con.Open();
+            }
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@eid", eid);
+            int n = cmd.ExecuteNonQuery();
+            if (n != 0)
+            {
+                Response.Write("<script>alert('Employee Deleted SuccessFully!!');</script>");
+                bindEmployee();
+            }
+            else
+            {
+                Response.Write("<script>alert('Employee Failed!!');</script>");
+            }
+            con.Close();
+        }
+
+    }
+}
